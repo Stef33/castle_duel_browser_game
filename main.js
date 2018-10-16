@@ -9,7 +9,10 @@ new Vue({
      :current-player-index="currentPlayerIndex"
      :players="players"
     />
-    <card :def="testCard" @click.native="handlePlay" />
+    <hand :cards="testHand" />
+    <div class="wrapper">
+        <card v-for="card of cards" :def="card.def" />
+    </div>
   </div>`,
   mounted () {
     console.log(this.$data === state)
@@ -20,8 +23,40 @@ new Vue({
     }
   },
   methods: {
-    handlePlay () {
-      console.log('You played a card!')
+    createTestHand () {
+        const cards = []
+        // Get the possible ids
+        const ids = Object.keys(cards)
+
+        // Draw 5 cards
+        for (let i = 0; i < 5; i++) {
+            cards.push(testDrawCard())
+        }
+
+        return cards
+    },
+    testDrawCard() {
+        // Choose a card at random with the ids
+        const ids = Object.keys(cards)
+        const randomId = ids[Math.floor(Math.random() * ids.length)]
+        // Return a new card with the definition
+        return {
+            // Unique id for the card
+            uid: cardId++,
+            // Id of the definition
+            id: randomId,
+            // Definition
+            def: cards[randomId]
+        }
+    },
+    handlePlay (color, number) {
+      console.log('handle play event', 'color=', color, 'number=', number)
+    },
+    play () {
+        this.$emit('play')
+    },
+    created () {
+        this.testHand = this.createTestHand()
     }
   }
 })
