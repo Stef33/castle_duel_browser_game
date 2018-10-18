@@ -16,20 +16,20 @@ Vue.component('top-bar', {
 })
 
 Vue.component('card', {
+  props: ['def'],
   template: `<div class="card" :class="'type-' + def.type" @click="play">
     <div class="title">{{ def.title }}</div>
     <img class="separator" src="svg/card-separator.svg" />
     <div class="description"><div v-html="def.description"></div></div>
     <div class="note" v-if="def.note"><div v-html="def.note"></div></div>
-  </div>`,
-  props: ['def'],
+  </div>`
 })
 
 Vue.component('hand', {
     template: `<div class="hand">
-        <div class="wrapper">
-            <!-- Cards -->
-        </div>
+      <div class="wrapper">
+          <card v-for="card of cards" def="card.def" />
+      </div>
     </div>`,
     props: ['cards']
 })

@@ -10,9 +10,6 @@ new Vue({
      :players="players"
     />
     <hand :cards="testHand" />
-    <div class="wrapper">
-        <card v-for="card of cards" :def="card.def" />
-    </div>
   </div>`,
   mounted () {
     console.log(this.$data === state)
