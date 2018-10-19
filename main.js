@@ -9,7 +9,9 @@ new Vue({
      :current-player-index="currentPlayerIndex"
      :players="players"
     />
-    <hand :cards="testHand" />
+    <transition name="hand">
+      <hand :cards="testHand" v-if="!activeOverlay" :cards="test-Hand"/>
+    </transistion>
   </div>`,
   mounted () {
     console.log(this.$data === state)
@@ -20,6 +22,9 @@ new Vue({
     }
   },
   methods: {
+    play () {
+        this.$emit('play')
+    },
     createTestHand () {
         const cards = []
         // Get the possible ids
@@ -46,11 +51,8 @@ new Vue({
             def: cards[randomId]
         }
     },
-    handlePlay (color, number) {
-      console.log('handle play event', 'color=', color, 'number=', number)
-    },
-    play () {
-        this.$emit('play')
+    handlePlay () {
+      console.log('handle play event', 'color=', color, 'number', number)
     },
     created () {
         this.testHand = this.createTestHand()
