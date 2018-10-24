@@ -4,14 +4,10 @@ new Vue({
   data: state,
 
   template: `<div id="#app">
-    <top-bar
-     :turn="turn"
-     :current-player-index="currentPlayerIndex"
-     :players="players"
-    />
+    <top-bar :turn="turn" :current-player-index="currentPlayerIndex" :players="players" />
     <transition name="hand">
-      <hand :cards="testHand" v-if="!activeOverlay" :cards="test-Hand"/>
-    </transistion>
+      <hand :cards="testHand" v-if="!activeOverlay" @card-play="testPlayCard"/>
+    </transition>
   </div>`,
   mounted () {
     console.log(this.$data === state)
@@ -22,6 +18,14 @@ new Vue({
     }
   },
   methods: {
+    handlePlay (card) {
+      this.$emit('card-play', card)
+    },
+    testPlayCard (card) {
+      // Remove the card from player hand
+      const index = this.testHand.indexOf(card)
+      this.testHand.splice(index, 1)
+    },
     play () {
         this.$emit('play')
     },
@@ -44,15 +48,12 @@ new Vue({
         // Return a new card with the definition
         return {
             // Unique id for the card
-            uid: cardId++,
+            uid: cardUid++,
             // Id of the definition
             id: randomId,
             // Definition
             def: cards[randomId]
         }
-    },
-    handlePlay () {
-      console.log('handle play event', 'color=', color, 'number', number)
     },
     created () {
         this.testHand = this.createTestHand()
