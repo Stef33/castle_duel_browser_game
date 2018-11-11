@@ -15,12 +15,41 @@ var state = {
   turn: 1,
   players: [
     {
-      name: 'Anne of Cleves'
+      name: 'Anne of Cleves',
+      // Starting stats
+      food: 10,
+      health: 10,
+      // Is skipping is next turn
+      skipTurn: false,
+      // Skiped turn last time
+      skippedTurn: false,
+      hand: [],
+      lastPlayedCardId: null,
+      dead: false
     },
     {
-      name: 'William the Bald'
+      name: 'William the Bald',
+      // Starting stats
+      food: 10,
+      health: 10,
+      // Is skipping is next turn
+      skipTurn: false,
+      // Skiped turn last time
+      skippedTurn: false,
+      hand: [],
+      lastPlayedCardId: null,
+      dead: false
     }
   ],
   testHand: [],
-  currentPlayerIndex: Math.round(Math.random())
+  currentPlayerIndex: Math.round(Math.random()),
+  get currentPlayer () {
+      return state.players[state.currentPlayerIndex]
+  },
+  get currentOpponentId () {
+      return state.currentPlayerIndex === 0 ? 1 : 0
+  },
+  get currentOpponent () {
+      return state.players[state.currentOpponentId]
+  }
 }

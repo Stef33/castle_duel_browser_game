@@ -5,8 +5,26 @@ new Vue({
 
   template: `<div id="#app">
     <top-bar :turn="turn" :current-player-index="currentPlayerIndex" :players="players" />
+
+    <div class="world">
+        <castle v-for="(player, index) in players" :index="index" :player="player"/>
+        <div class="land"/>
+    </div>
+
     <transition name="hand">
       <hand :cards="testHand" v-if="!activeOverlay" @card-play="testPlayCard"/>
+    </transition>
+
+    <transition name="fade">
+        <div class="ovarlay-background" v-if="activeOverlay" />
+    </transition>
+
+    <transition name="zoom">
+        <overlay v-if="activeOverlay" :key="activeOverlay">
+            <component :is="'overlay-content-' + activeOverlay"
+                :player="currentPlayer" :opponent="currentOpponent"
+                :players="players"/>
+        </overlay>
     </transition>
   </div>`,
   mounted () {
@@ -18,6 +36,9 @@ new Vue({
     }
   },
   methods: {
+    handleClick () {
+        thos.$emit('close')
+    },
     handlePlay (card) {
       this.$emit('card-play', card)
     },
@@ -65,3 +86,11 @@ new Vue({
 window.addEventListener('resize', () => {
   state.worldRatio = getWorldRatio()
 })
+
+// Tween.js
+requestAnimationFrame(time);
+
+function animate(time) {
+    requestAnimationFrame(animate);
+    TWEEN.update(time);
+}
